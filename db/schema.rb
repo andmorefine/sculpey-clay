@@ -10,7 +10,23 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_09_11_025113) do
+ActiveRecord::Schema[8.0].define(version: 2025_09_11_123533) do
+  create_table "posts", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.string "title", limit: 100, null: false
+    t.text "description", limit: 2000, null: false
+    t.integer "post_type", default: 0
+    t.integer "difficulty_level"
+    t.boolean "published", default: true
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["created_at"], name: "index_posts_on_created_at"
+    t.index ["post_type"], name: "index_posts_on_post_type"
+    t.index ["published"], name: "index_posts_on_published"
+    t.index ["user_id", "created_at"], name: "index_posts_on_user_id_and_created_at"
+    t.index ["user_id"], name: "index_posts_on_user_id"
+  end
+
   create_table "sessions", force: :cascade do |t|
     t.integer "user_id", null: false
     t.string "ip_address"
@@ -28,5 +44,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_11_025113) do
     t.index ["email_address"], name: "index_users_on_email_address", unique: true
   end
 
+  add_foreign_key "posts", "users"
   add_foreign_key "sessions", "users"
 end
